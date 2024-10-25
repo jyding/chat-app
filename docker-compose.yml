@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    volumes:
+      - ./instance:/app/instance  # Ensure persistent database storage
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=app.py  # Or adjust this to match your app structure
+      - FLASK_ENV=development  # Use 'production' if applicable
+    command: >
+      bash -c "flask db upgrade && flask run --host=0.0.0.0 --port=5000"
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "8080:80"
